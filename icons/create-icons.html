@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Icons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        .instructions {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        a {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 8px 15px;
+            background-color: #2773b1;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mental Math App Icon Generator</h1>
+    
+    <div class="instructions">
+        <h2>Instructions:</h2>
+        <p>1. The icons will be drawn below</p>
+        <p>2. Right-click on each icon and select "Save Image As..."</p>
+        <p>3. Save the icons as "icon-192x192.png" and "icon-512x512.png" in the icons folder</p>
+    </div>
+    
+    <h3>192x192 Icon:</h3>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <a id="download192" href="#" download="icon-192x192.png">Download 192x192 Icon</a>
+    
+    <h3>512x512 Icon:</h3>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+    <a id="download512" href="#" download="icon-512x512.png">Download 512x512 Icon</a>
+    
+    <script>
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#2773b1';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Text
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size/4}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Math', size/2, size/2);
+            
+            // Set download link
+            const downloadLink = document.getElementById(`download${size}`);
+            downloadLink.href = canvas.toDataURL('image/png');
+        }
+        
+        window.onload = function() {
+            drawIcon(document.getElementById('canvas192'), 192);
+            drawIcon(document.getElementById('canvas512'), 512);
+        };
+    </script>
+</body>
+</html> 
