@@ -2,54 +2,7 @@
 
 A comprehensive mental math practice application that helps users improve their calculation skills through various exercises.
 
-## Features
-
-- Multiple practice modes (Calendar, Multiplication, Addition, Square Root, etc.)
-- Smart practice that focuses on your weakest problems
-- Performance tracking and history
-- Leaderboards to track progress
-- Works offline
-- Available as a web app, desktop app, and mobile app
-
-## Installation
-
-### Prerequisites
-
-- Node.js (v14 or later)
-- npm (v6 or later)
-
-### Setup
-
-1. Clone the repository
-   ```
-   git clone https://github.com/yourusername/mental-math.git
-   cd mental-math
-   ```
-
-2. Install dependencies
-   ```
-   npm install
-   ```
-
-3. Generate app icons
-   ```
-   npm run generate-icons
-   ```
-
-## Running the App
-
-### Web Version
-
-To run the web version locally:
-
-```
-npm start
-```
-
-This will start a local server at http://localhost:8000
-
-### Building for Production
-
+## 
 #### Progressive Web App (PWA)
 
 To build the optimized PWA version:
