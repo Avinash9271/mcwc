@@ -1883,4 +1883,55 @@ function toggleLocalStorage() {
 function clearLocalStorage() {
     localStorage.clear();
     toggleLocalStorage(); // Refresh the view
+}
+
+// Function to start game with Square Root Range settings
+async function startWithSquareRootRange() {
+    const min = parseInt(document.getElementById('min-range').value);
+    const max = parseInt(document.getElementById('max-range').value);
+
+    // Select the mode and set the range
+    currentMode = 'square-root-range';
+    gameManager.setModule(modules['square-root-range']);
+    modules['square-root-range'].setRange(min, max);
+
+    // Hide settings screen and show duration select
+    document.getElementById('square-root-range-settings').style.display = 'none';
+    showDurationSelect();
+}
+
+// Function to show Square Root Range settings screen
+function showSquareRootRangeSettings() {
+    document.getElementById('mode-select-screen').style.display = 'none';
+    document.getElementById('square-root-range-settings').style.display = 'block';
+    
+    // Setup range slider event listeners
+    document.getElementById('min-range').addEventListener('input', updateMinRangeValue);
+    document.getElementById('max-range').addEventListener('input', updateMaxRangeValue);
+}
+
+// Function to update min range value display
+function updateMinRangeValue() {
+    const value = document.getElementById('min-range').value;
+    document.getElementById('min-range-value').textContent = value;
+    
+    // Ensure max is always >= min
+    const maxRange = document.getElementById('max-range');
+    if (parseInt(maxRange.value) < parseInt(value)) {
+        maxRange.value = value;
+        document.getElementById('max-range-value').textContent = value;
+    }
+}
+
+// Function to update max range value display
+function updateMaxRangeValue() {
+    const value = document.getElementById('max-range').value;
+    document.getElementById('max-range-value').textContent = value;
+    
+    // Ensure min is always <= max
+    const minRange = document.getElementById('min-range');
+    if (parseInt(minRange.value) > parseInt(value)) {
+        minRange.value = value;
+        document.getElementById('min-range-value').textContent = value;
+    }
 } 
