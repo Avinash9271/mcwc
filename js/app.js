@@ -1934,4 +1934,16 @@ function updateMaxRangeValue() {
         minRange.value = value;
         document.getElementById('min-range-value').textContent = value;
     }
+}
+
+// Function to toggle calendar options display
+function toggleCalendarOptions() {
+    const options = document.getElementById('calendar-options');
+    options.style.display = options.style.display === 'none' ? 'block' : 'none';
+}
+
+// Function to toggle square root options display
+function toggleSquareRootOptions() {
+    const options = document.getElementById('square-root-options');
+    options.style.display = options.style.display === 'none' ? 'block' : 'none';
 } 
