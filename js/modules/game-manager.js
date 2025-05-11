@@ -23,6 +23,9 @@ export class GameManager {
         this.useTimeFilter = false;
         this.timeThreshold = 2; // seconds
         
+        // Reverse input setting
+        this.reverseInput = false;
+        
         // Cache for historical problems
         this.slowestProblems = [];
         this.mistakeProblems = [];
@@ -45,6 +48,7 @@ export class GameManager {
             this.probMistakes = await this.getSettingFromIndexedDB('probMistakes', 0.25);
             this.useTimeFilter = await this.getSettingFromIndexedDB('useTimeFilter', false);
             this.timeThreshold = await this.getSettingFromIndexedDB('timeThreshold', 2);
+            this.reverseInput = await this.getSettingFromIndexedDB('reverseInput', false);
             
             this.settingsLoaded = true;
             console.log('GameManager settings loaded from IndexedDB');
@@ -139,6 +143,16 @@ export class GameManager {
         
         // Reset historical data cache
         this.hasLoadedHistoricalData = false;
+    }
+    
+    // Set reverse input setting
+    setReverseInput(reverseInput) {
+        this.reverseInput = reverseInput;
+        
+        // Save setting to IndexedDB
+        if (window.saveSettingToIndexedDB) {
+            window.saveSettingToIndexedDB('reverseInput', reverseInput);
+        }
     }
     
     // Load historical data for the current module

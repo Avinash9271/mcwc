@@ -417,6 +417,9 @@ async function loadSavedSettings() {
             showFeedback = savedFeedback;
         }
         
+        // Load reverse input preference
+        const reverseInput = await getSettingFromIndexedDB('reverseInput', false);
+        
         // Load multiplication difficulty if available
         const savedDifficulty = await getSettingFromIndexedDB('multiplicationDifficulty', null);
         if (savedDifficulty && ['2x2', '3x3', '4x4', '8x8'].includes(savedDifficulty)) {
@@ -458,6 +461,7 @@ async function loadSavedSettings() {
         document.getElementById('use-time-filter').checked = useTimeFilter;
         document.getElementById('time-threshold').value = timeThreshold;
         document.getElementById('time-threshold-value').textContent = `${timeThreshold}s`;
+        document.getElementById('reverse-input').checked = reverseInput;
         
         // Show/hide smart generator settings
         document.getElementById('smart-generator-settings').style.display = 
@@ -484,6 +488,9 @@ function fallbackLoadSettings() {
     if (savedFeedback !== null) {
         showFeedback = savedFeedback === 'true';
     }
+    
+    // Load reverse input preference
+    const reverseInput = localStorage.getItem('reverseInput') === 'true';
     
     // Load multiplication difficulty if available
     const savedDifficulty = localStorage.getItem('multiplicationDifficulty');
@@ -526,6 +533,7 @@ function fallbackLoadSettings() {
     document.getElementById('use-time-filter').checked = useTimeFilter;
     document.getElementById('time-threshold').value = timeThreshold;
     document.getElementById('time-threshold-value').textContent = `${timeThreshold}s`;
+    document.getElementById('reverse-input').checked = reverseInput;
     
     // Show/hide smart generator settings
     document.getElementById('smart-generator-settings').style.display = 
@@ -576,8 +584,9 @@ function showDurationSelect() {
     document.getElementById('history-screen').style.display = 'none';
     document.getElementById('duration-select-screen').style.display = 'block';
     
-    // Set the checkbox state
+    // Set the checkbox states
     document.getElementById('show-feedback').checked = showFeedback;
+    document.getElementById('reverse-input').checked = gameManager.reverseInput;
     
     // Highlight selected duration
     document.querySelectorAll('.duration-option').forEach(opt => {
@@ -612,6 +621,9 @@ async function startWithSettings() {
     showFeedback = document.getElementById('show-feedback').checked;
     saveSettingToIndexedDB('showFeedback', showFeedback);
     
+    // Get reverse input setting
+    const reverseInput = document.getElementById('reverse-input').checked;
+    
     // Get and save smart generator settings
     const useSmartGenerator = document.getElementById('use-smart-generator').checked;
     const lookbackDays = parseInt(document.getElementById('lookback-days').value);
@@ -627,6 +639,9 @@ async function startWithSettings() {
     saveSettingToIndexedDB('probMistakes', probMistakes);
     saveSettingToIndexedDB('useTimeFilter', useTimeFilter);
     saveSettingToIndexedDB('timeThreshold', timeThreshold);
+    
+    // Set reverse input setting in the game manager
+    gameManager.setReverseInput(reverseInput);
     
     // Apply settings to game manager
     gameManager.setSmartGeneratorSettings(
@@ -709,8 +724,13 @@ function displayNextProblem() {
 
 function checkAnswer() {
     const answerInput = document.getElementById('answer');
-    const userAnswer = answerInput.value.trim();
+    let userAnswer = answerInput.value.trim();
     if (!userAnswer) return;
+    
+    // If reverse input is enabled, reverse the input digits
+    if (gameManager.reverseInput) {
+        userAnswer = userAnswer.split('').reverse().join('');
+    }
     
     const result = gameManager.checkAnswer(userAnswer);
     
